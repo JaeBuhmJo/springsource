@@ -20,32 +20,32 @@ public class BookMain {
 		BookService service = (BookService) ctx.getBean("bookService");
 
 		// 도서 추가
-//		BookDTO insertDto = new BookDTO(1011, "저것은 영어책입니다", "조재범", 20000, "이번엔 가격만 수정가능");
-//				
-//		if(service.insertBook(insertDto)) {
-//			System.out.println("입력성공");
-//		}
+		BookDTO insertDto = new BookDTO(1013, "이건 일본어책", "조재범", 700, "");
+
+		if (service.insertBook(insertDto)) {
+			System.out.println("입력성공");
+		}
 		// 도서 삭제
 //		if (service.deleteBook(1012)) {
 //			System.out.println("삭제성공");
 //		}
 		// 도서 업데이트
-		BookDTO updateDto = new BookDTO();
-		updateDto.setCode(1011);
-		updateDto.setPrice(80000);
-		//이거 안됨. BindingException
-		if (service.updateBook(90000, 1011)) {
-			System.out.println("수정성공");
-		}
+//		BookDTO updateDto = new BookDTO();
+//		updateDto.setCode(1011);
+//		updateDto.setPrice(80000);
+//		//이거 안됨. BindingException
+//		if (service.updateBook(90000, 1011)) {
+//			System.out.println("수정성공");
+//		}
 //
 //		// 도서 하나 조회
 //		BookDTO getDto = service.getbook(1011);
 //		System.out.println(getDto);
 
 		// 전체 도서 목록 가져오기
-//		List<BookDTO> list = service.getBookList();
-//		for (BookDTO bookDTO : list) {
-//			System.out.println(bookDTO);
-//		}
+		List<BookDTO> list = service.getBookList();
+		for (BookDTO bookDTO : list) {
+			System.out.println(bookDTO);
+		}
 	}
 }
