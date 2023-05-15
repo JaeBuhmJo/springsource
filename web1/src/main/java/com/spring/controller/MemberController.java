@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import com.spring.domain.LoginDTO;
+import com.spring.domain.RegisterDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,10 +41,12 @@ public class MemberController {
 //		System.out.println(req.getParameter("password"));
 //	}
 	@PostMapping("/login")
-	public void loginPost(@RequestParam("userid") String id, String password) {
+	public String loginPost(LoginDTO dto) {
 		log.info("login post...");
-		System.out.println("id " + id);
-		System.out.println("password " + password);
+		System.out.println("id : " + dto.getId());
+		System.out.println("password : " + dto.getPassword());
+		
+		return "/member/main";
 	}
 
 //	@RequestMapping("/register")
@@ -51,4 +55,32 @@ public class MemberController {
 		log.info("register...");
 //		return "/member/register";
 	}
+	
+	// /member/register + POST처리
+	// DTO 작성
+	// 사용자 입력값이 잘 들어왔는지 확인
+	// login.jsp 보여주기
+	@PostMapping("/register")
+	public String registerPost(RegisterDTO dto) {
+		log.info("register post...");
+		if(dto.getId().isEmpty()) {
+			return "/member/register";
+		}
+		if(dto.getPassword().isEmpty()) {
+			return "/member/register";
+		}
+		if(dto.getName().isEmpty()) {
+			return "/member/register";
+		}
+		if(dto.getEmail().isEmpty()) {
+			return "/member/register";
+		}
+		
+		// redirect: 붙게 되면 DipatcherServlet이 동작
+		// == response.sendRedirect()
+		// => 포워드가 아니고 리다이렉트기때문에 겟방식으로 해당 주소로 이동하게 됨. 주소줄도.
+//		return "redirect:/member/login"; 
+		return "/member/login"; 
+	}
+
 }
