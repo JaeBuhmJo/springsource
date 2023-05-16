@@ -2,16 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="../include/header.jsp"%>
 <h1>도서 목록</h1>
-<form class="row g-3 justify-content-center" action='<c:url value="/search.do"/>'>
+<form class="row g-3 justify-content-center" action='<c:url value="/book/search"/>'>
 	<div class="col-auto">
 		<select class="form-select" name="criteria">
-			<option <c:out value="${dto.criteria==null? 'selected' : ''}"/>>검색기준선택</option>
-			<option value="title" <c:out value="${dto.criteria=='title'? 'selected' : ''}"/>>title</option>
-			<option value="writer" <c:out value="${dto.criteria=='writer'? 'selected' : ''}"/>>writer</option>
+			<option <c:out value="${searchDTO.criteria==null? 'selected' : ''}"/>>검색기준선택</option>
+			<option value="title" <c:out value="${searchDTO.criteria=='title'? 'selected' : ''}"/>>title</option>
+			<option value="writer" <c:out value="${searchDTO.criteria=='writer'? 'selected' : ''}"/>>writer</option>
 		</select>
 	</div>
 	<div class="col-md-5">
-		<input type="text" class="form-control" placeholder="검색어" name="keyword" value="${dto.keyword}" />
+		<input type="text" class="form-control" placeholder="검색어" name="keyword" value="${searchDTO.keyword}" />
 	</div>
 	<div class="col-auto">
 		<button type="submit" class="btn btn-secondary">검색</button>
