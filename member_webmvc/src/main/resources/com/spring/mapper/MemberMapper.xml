@@ -13,4 +13,16 @@
 	<select id="getPassword" resultType="java.lang.String">
 		select password from membertbl where userid = #{userid}
 	</select>
+	
+	<select id="dupId" resultType="java.lang.Integer">
+		select count(*) from membertbl where userid = #{userid}
+	</select>
+	
+	<delete id="leave">
+		delete from membertbl where userid = #{userid}
+	</delete>
+	
+	<update id="changePwd">
+		update membertbl set password = #{newPassword} where userid = #{userid}
+	</update>
 </mapper>

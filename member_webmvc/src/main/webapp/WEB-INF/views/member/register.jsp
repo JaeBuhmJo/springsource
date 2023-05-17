@@ -43,5 +43,5 @@
 <script>
 	const path = '<c:url value="/list.do"/>';
 </script>
-<%-- <script src='<c:url value="/resources/js/register.js"/>'></script> --%>
+<script src='<c:url value="/resources/js/register.js"/>'></script>
 <%@include file="../include/footer.jsp"%>
