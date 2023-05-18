@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.mapper.BoardMapper">
-	<select id="list" resultType="com.spring.domain.BoardDTO">
+<!-- 	<select id="list" resultType="com.spring.domain.BoardDTO">
 		select bno,title,writer,regdate,updatedate from spring_board order by bno desc, regdate desc
+	</select> -->
+	
+	<!-- xml은 <,>,<= 등의 비교연산자를 그냥 쓰면 html의 태그 꺾쇠로 인식한다. 오류발생함. => <![CDATA[]]>-->
+	<select id="list" resultType="com.spring.domain.BoardDTO">
+		<![CDATA[
+		  select bno, title, writer, regdate, updatedate 
+		  from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate 
+		  from spring_board where rownum <= (#{pageNum}*#{amount}))
+		  where rn>(#{pageNum}-1)*#{amount}
+		]]>
+	</select>
+	
+	<!-- 전체 게시물 개수 -->
+	<select id="totalCnt" resultType="java.lang.Integer">
+		select count(*) from spring_board
 	</select>
 	
 	<insert id="insert">
-		insert into spring_board(bno, title, content, writer) values(seq_board.nextval, #{title}, #{content}, #{writer})
+	<!-- 주로 pk 값을 미리 SQL을 통해서 처리해 두고 특정한 이름으로 결과를 보관 -->
+		<selectKey keyProperty="bno" order="BEFORE" resultType="int">
+			select seq_board.nextval from dual
+		</selectKey>
+		<!-- 위에서 bno라는 이름으로 DTO에 저장해준다. nextval 이미 발급됐기 때문에 insert문에서는 #{bno}로 호출한다 -->
+		insert into spring_board(bno, title, content, writer) values(#{bno}, #{title}, #{content}, #{writer})
 	</insert>
 	
-	<select id="read" resultType="com.spring.domain.BoardDTO">
+	<select id="get" resultType="com.spring.domain.BoardDTO">
 		select bno,title,content, writer from spring_board where bno = #{bno}
 	</select>
+	
+	<update id="update">
+		update spring_board set title = #{title}, content = #{content}, updatedate = sysdate where bno = #{bno}
+	</update>
+	
+	<delete id="delete">
+		delete from spring_board where bno = #{bno}
+	</delete>
 
 </mapper>
