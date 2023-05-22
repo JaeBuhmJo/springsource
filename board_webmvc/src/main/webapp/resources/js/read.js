@@ -13,3 +13,4 @@
     form.action = "/board/list";
     form.submit();
   });
+  

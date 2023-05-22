@@ -6,7 +6,7 @@
 </div>
 <div class="row">
 	<div class="col">
-		<form action="" method="post">
+		<form action="" method="post" id="registerForm" novalidate>
 		  <div class="form-group">
 		    <label for="title">Title</label>
 		    <input type="text" class="form-control" id="title" placeholder="title" name="title" required>
