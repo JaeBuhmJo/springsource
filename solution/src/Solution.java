@@ -1,25 +1,23 @@
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 class Solution {
-	public int solution(int m, int n, int[][] puddles) {
-		int[][] dp = new int[n + 1][m + 1];
-		for (int i = 0; i < dp.length; i++) {
-			Arrays.fill(dp[i], 1);
-		}
+	public static void main(String args[]) throws Exception {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+			int testcases = Integer.parseInt(br.readLine());
+			for (int i = 0; i < testcases; i++) {
+				int count = 0;
+				int radius = Integer.parseInt(br.readLine());
 
-		for (int k = 0; k < puddles.length; k++) {
-			dp[puddles[k][1]][puddles[k][0]] = 0;
-		}
-
-		dp[1][0] = 1;
-		for (int i = 2; i <= n; i++) {
-			for (int j = 2; j <= m; j++) {
-				if (dp[i][j] == 0) {
-					continue;
+				for (int j = 1; j <= radius; j++) {
+					for (int j2 = 0; j2 <= radius; j2++) {
+						if (Math.pow(j, 2) + Math.pow(j2, 2) <= Math.pow(radius, 2)) {
+							count++;
+						}
+					}
 				}
-				dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % 1000000007;
+				System.out.println("#" + (i + 1) + " " + ((4 * count) + 1));
 			}
 		}
-		return dp[n][m];
 	}
 }
