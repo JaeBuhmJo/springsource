@@ -7,29 +7,71 @@
 <div class="row">
 	<div class="col">
 		<form action="" method="post" id="readForm">
-		  <div class="form-group">
+		  <div class="form-group"> 
 		    <label for="title">Title</label>
-		    <input type="text" class="form-control" id="title" name="title" value="${boardDTO.title }" readonly>
+		    <input type="text" class="form-control" id="title" name="title" value="${dto.title }" readonly>
 		  </div>
 		  <div class="form-group">
 		    <label for="content">Content</label>
-		    <textarea class="form-control" id="content" rows="10" name="content" readonly>${boardDTO.content }</textarea>
+		    <textarea class="form-control" id="content" rows="10" name="content" readonly>${dto.content }</textarea>
 		  </div>
 		  <div class="form-group">
 		    <label for="writer">Writer</label>
-		    <input type="text" class="form-control" id="writer" name="writer" value="${boardDTO.writer}" readonly>
+		    <input type="text" class="form-control" id="writer" name="writer" value="${dto.writer}" readonly>
 		  </div>
 		  <button type="submit" class="btn btn-primary">수정</button>
 		  <button type="button" class="btn btn-secondary">목록</button>
-		</form>
+		</form> 
+	</div> 
+</div>  
+<form action="" class="mt-3" id="replyForm">  
+	<div class="form-row">
+		<div class="col-11">
+			<textarea name="reply" id="reply" rows="5" class="form-control"></textarea>
+		</div>
+		<div class="col my-2">
+			<div class="form-row my-2">
+				<input type="text" name="replyer" id="replyer" class="form-control"/>
+			</div>
+			<div class="form-row my-2">
+				<button class="btn btn-success btn-block">댓글 작성</button>
+			</div>
+		</div>
 	</div>
-</div> 
+</form>
+
+<!-- 댓글 목록 -->
+<div class="card mt-4">
+	<div class="card-header">
+		<i class="fa fa-comments fa-fw"></i>
+		Reply
+		<button id="addReplyBtn" class="btn btn-primary btn-sm mx-3">New Reply</button>
+	</div>
+	<div class="card-body">
+		<ul class="chat list-group list-group-flush">
+			<li class='list-group-item border-bottom' data-rno='1'>
+				<div class='d-flex justify-content-between'>
+					<strong class='primary-font'>user00</strong>
+					<small class='text-muted text-right'>2023-05-24 00:00</small>
+				</div>
+				<p>Good Job!!</p>
+			</li>
+		</ul>
+	</div>
+</div>
+ 
 <form action="" id="operForm">
-	<input type="hidden" name="bno" value="${boardDTO.bno }"/>
+	<input type="hidden" name="bno" value="${dto.bno }"/>
 	<input type="hidden" name="page" value="${cri.page }"/>
 	<input type="hidden" name="amount" value="${cri.amount }"/>
 	<input type="hidden" name="type" value="${cri.type}"/>
 	<input type="hidden" name="keyword" value="${cri.keyword}"/>
 </form>
+<!-- 스크립트간 순서 중요함 -->
+<script>    
+	// 게시물 글번호 가져오기
+	const bno = ${dto.bno};
+</script>
+<script src="/resources/js/reply.js"></script>
 <script src="/resources/js/read.js"></script>
 <%@ include file="../include/footer.jsp"%>

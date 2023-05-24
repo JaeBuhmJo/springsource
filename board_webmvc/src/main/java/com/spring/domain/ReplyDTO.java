@@ -16,4 +16,5 @@ public class ReplyDTO {
 	private String reply;
 	private String replyer;
 	private Date replyDate;
+	private Date updateDate;
 }

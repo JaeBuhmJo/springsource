@@ -60,7 +60,7 @@ public class BoardController {
 	public void readGet(int bno, Model model, @ModelAttribute("cri") Criteria cri) {
 		log.info("내용 조회 " + bno);
 		BoardDTO boardDTO = service.getRow(bno);
-		model.addAttribute("boardDTO", boardDTO);
+		model.addAttribute("dto", boardDTO);
 	}
 
 	@PostMapping("/modify")
