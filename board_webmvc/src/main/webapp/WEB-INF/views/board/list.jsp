@@ -56,10 +56,10 @@
 		</tr>
 	</thead>
 	<tbody>
-		<c:forEach var="dto" items="${list}">
+		<c:forEach var="dto" items="${list}"> 
 			<tr>
 				<th scope="row">${dto.bno}</th>
-				<td><a href="${dto.bno}" class="move">${dto.title}</a></td>
+				<td><a href="${dto.bno}" class="move">${dto.title}</a> <strong>[${dto.replyCnt}]<strong></td>
 				<td>${dto.writer}</td>
 				<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${dto.regDate}" /></td>
 				<td><fmt:formatDate pattern="yyyy-MM-dd HH:mm" value="${dto.updateDate}" /></td>
@@ -73,16 +73,16 @@
 		<c:if test="${pageDTO.prev }">
 			<li class="page-item"><a class="page-link" href="${pageDTO.startPage-1 }">Previous</a></li>
 		</c:if>
-		<c:forEach begin="${pageDTO.startPage }" end="${pageDTO.endPage }" var="idx">
+		<c:forEach begin="${pageDTO.startPage }" end="${pageDTO.endPage }" var="idx"> 
 			<li class="page-item ${cri.page==idx?'active':'' }">
 			<a class="page-link" href="${idx }">${idx }</a>
 			</li>
 		</c:forEach>
-		<c:if test="${pageDTO.next }">
+		<c:if test="${pageDTO.next }"> 
 			<li class="page-item"><a class="page-link" href="${pageDTO.endPage+1 }">Next</a></li>
 		</c:if>
 	</ul>
-</nav>
+</nav> 
 <!-- 페이지 나누기 종료  -->
 	 
 <!-- Modal -->

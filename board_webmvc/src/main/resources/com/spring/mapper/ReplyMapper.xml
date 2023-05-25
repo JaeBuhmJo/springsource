@@ -38,7 +38,7 @@
 	</update>
 	
 	<delete id="delete">
-		delete from spring_reply where rno = #{rno}
+		delete from spring_reply where rno = #{rno} 
 	</delete>
 
 </mapper>

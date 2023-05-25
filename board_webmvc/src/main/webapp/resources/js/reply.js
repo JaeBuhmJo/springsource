@@ -44,8 +44,9 @@ let replyService = (function () {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         if (callback) {
-          callback(data);
+          callback(data.replyCnt, data.list);
         }
       })
       .catch((error) => console.log(error));
@@ -101,10 +102,52 @@ let replyService = (function () {
       .catch((error) => alert(error));
   }
 
+  function update(reply, callback) {
+    fetch("/replies/" + reply.rno, {
+      method: "put",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(reply),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("댓글 수정 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        if (callback) {
+          callback(data);
+        }
+      })
+      .catch((error) => alert(error));
+  }
+
+  function remove(rno, callback) {
+    fetch("/replies/" + rno, {
+      method: "delete",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("댓글 삭제 실패");
+        }
+        return response.text();
+      })
+      .then((data) => {
+        if (callback) {
+          callback(data);
+        }
+      })
+      .catch((error) => alert(error));
+  }
+
   return {
     add: add,
     getList: getList,
     displayTime: displayTime,
     get: get,
+    update: update,
+    remove: remove,
   };
 })(); // () : IIFE : 즉시 실행 함수

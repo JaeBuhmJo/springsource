@@ -8,8 +8,8 @@
 	<!-- xml은 <,>,<= 등의 비교연산자를 그냥 쓰면 html의 태그 꺾쇠로 인식한다. 오류발생함. => <![CDATA[]]>-->
 	<select id="list" resultType="com.spring.domain.BoardDTO">
 		<![CDATA[
-		  select bno, title, writer, regdate, updatedate 
-		  from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate 
+		  select bno, title, writer, regdate, updatedate , replycnt 
+		  from (select /*+INDEX_DESC(spring_board pk_spring_board)*/ rownum rn, bno, title, writer, regdate, updatedate, replycnt 
 		  from spring_board where 
 		 ]]>
 		 	<include refid="criteria"></include>
@@ -26,6 +26,11 @@
 			<include refid="criteria"></include>
 			bno >0
 	</select>
+	
+	<update id="updateReplyCnt">
+		update spring_board set replycnt = replycnt + #{amount}
+		where bno=#{bno}
+	</update>
 	
 	<!-- 동적 쿼리 -->
 	<sql id="criteria">

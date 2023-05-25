@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.domain.Criteria;
 import com.spring.domain.ReplyDTO;
+import com.spring.domain.ReplyPageDTO;
 import com.spring.service.ReplyService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -48,24 +49,24 @@ public class ReplyController {
 	}
 	  
 	@GetMapping("/pages/{bno}/{page}")
-	public ResponseEntity<List<ReplyDTO>> select(@PathVariable("bno") int bno, @PathVariable("page") int page){
+	public ResponseEntity<ReplyPageDTO> select(@PathVariable("bno") int bno, @PathVariable("page") int page){
 		log.info("댓글 조회 "+bno);
 		Criteria cri = new Criteria(page, 10);
-		return new ResponseEntity<List<ReplyDTO>>(reService.listAll(cri, bno), HttpStatus.OK);
+		return new ResponseEntity<ReplyPageDTO>(reService.getList(cri, bno), HttpStatus.OK);
 	}
 	
 	@PutMapping("/{rno}")
 	public ResponseEntity<String> modify(@RequestBody ReplyDTO replyDTO, @PathVariable("rno")int rno){
 		replyDTO.setRno(rno);
 		log.info("댓글 수정 " + replyDTO);
-		return reService.update(replyDTO)?
+		return reService.update(replyDTO)? 
 				new ResponseEntity<String>("success",HttpStatus.OK):
 				new ResponseEntity<String>("fail",HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	// http://localhost:8080/replies/rno + DELETE
 	@DeleteMapping("/{rno}")
-	public ResponseEntity<String> delete(@PathVariable("rno") int rno){
+	public ResponseEntity<String> delete(@PathVariable("rno") int rno){   
 		log.info("댓글 삭제 "+rno);
 		return reService.delete(rno)?
 				new ResponseEntity<String>("success",HttpStatus.OK):

@@ -9,15 +9,15 @@
 		<form action="" method="post">
 		  <div class="form-group">
 		    <label for="title">Title</label>
-		    <input type="text" class="form-control" id="title" name="title" value="${boardDTO.title }" >
+		    <input type="text" class="form-control" id="title" name="title" value="${dto.title }" >
 		  </div>
 		  <div class="form-group">
 		    <label for="content">Content</label>
-		    <textarea class="form-control" id="content" rows="10" name="content" >${boardDTO.content }</textarea>
+		    <textarea class="form-control" id="content" rows="10" name="content" >${dto.content }</textarea>
 		  </div>
 		  <div class="form-group">
 		    <label for="writer">Writer</label>
-		    <input type="text" class="form-control" id="writer" name="writer" value="${boardDTO.writer}" readonly>
+		    <input type="text" class="form-control" id="writer" name="writer" value="${dto.writer}" readonly>
 		  </div>
 		  <button type="submit" class="btn btn-primary">수정</button>
 		  <button type="button" class="btn btn-danger">삭제</button>
@@ -26,7 +26,7 @@
 	</div>
 </div>
 <form action="" id="operForm">
-	<input type="hidden" name="bno" value="${boardDTO.bno }"/>
+	<input type="hidden" name="bno" value="${dto.bno }"/>
 	<input type="hidden" name="page" value="${cri.page }"/>
 	<input type="hidden" name="amount" value="${cri.amount }"/>
 	<input type="hidden" name="type" value="${cri.type}"/>
