@@ -18,7 +18,7 @@
 <button type="submit" id="uploadBtn">upload</button>
 <div class="uploadResult">
 	<ul></ul> 
-</div>
+</div>  	 
 <script src="/resources/js/upload.js"></script>  
-</body>  
+</body>        
 </html>

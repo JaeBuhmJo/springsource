@@ -24,6 +24,24 @@
 		</form> 
 	</div> 
 </div>  
+
+<div class="row mt-3"> 
+	<div class="col">
+		<div class="card">
+			<div class="card-header">   
+				<i class="fa fa-file"></i>
+				파일첨부
+			</div>  
+			<div class="card-body">
+				<div class="uploadResult"> 
+					<ul></ul>
+				</div> 
+			</div>  
+		</div> 
+	</div> 
+</div> 
+
+<!-- 댓글 작성 폼 -->
 <form action="" class="mt-3" id="replyForm">  
 	<div class="form-row">
 		<div class="col-11">

@@ -15,7 +15,6 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -117,7 +116,6 @@ public class UploadAjaxController {
 			e.printStackTrace();
 		}
 		return result;
-
 	}
 
 	// HttpServletRequest 객체 : 클라이언트 정보를 가져올 수 있음
