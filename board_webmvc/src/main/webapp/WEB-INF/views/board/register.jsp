@@ -10,7 +10,7 @@
 		  <div class="form-group">
 		    <label for="title">Title</label>
 		    <input type="text" class="form-control" id="title" placeholder="title" name="title" required>
-		  </div> 
+		  </div>  
 		  <div class="form-group">
 		    <label for="content">Content</label>
 		    <textarea class="form-control" id="content" rows="10" name="content" placeholder="content" required></textarea>
@@ -42,7 +42,9 @@
 		</div> 
 	</div> 
 </div> 
-
+<script>
+	const path = '${pageContext.request.requestURI}';
+</script>
 <script src="/resources/js/register.js"></script>
 <script src="/resources/js/upload.js"></script>
 <%@ include file="../include/footer.jsp"%>

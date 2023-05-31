@@ -15,4 +15,5 @@ public interface BoardMapper {
 	public int delete(int bno);
 	public int totalCnt(Criteria cri);
 	public int updateReplyCnt(@Param("bno") int bno, @Param("amount")int amount);
+	public BoardDTO readAttach(int bno);
 }

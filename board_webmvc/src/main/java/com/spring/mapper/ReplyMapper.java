@@ -14,4 +14,5 @@ public interface ReplyMapper {
 	public int getCountByBno(int bno);
 	public int update(ReplyDTO replyDTO);
 	public int delete(int rno);
+	public int deleteAll(int bno);
 }

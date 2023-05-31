@@ -1,9 +1,15 @@
 package com.spring.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.spring.domain.AttachFileDTO;
 import com.spring.domain.BoardDTO;
 import com.spring.domain.Criteria;
 import com.spring.domain.PageDTO;
@@ -82,12 +89,50 @@ public class BoardController {
 
 	@GetMapping("/remove")
 	public String removeGet(int bno, RedirectAttributes rttr, @ModelAttribute("cri") Criteria cri) {
+		// 폴더에서 첨부 파일 제거
+		deleteAttachFiles(service.getAttachList(bno));
 		service.delete(bno);
+
 		rttr.addFlashAttribute("result", "삭제가 완료되었습니다");
 		rttr.addAttribute("page", cri.getPage());
 		rttr.addAttribute("amount", cri.getAmount());
 		rttr.addAttribute("type", cri.getType());
 		rttr.addAttribute("keyword", cri.getKeyword());
 		return "redirect:/board/list";
+		
+		
+	}
+
+	// 첨부파일 가져오기(/getAttachList + GET + bno)
+	@GetMapping("/getAttachList")
+	public ResponseEntity<List<AttachFileDTO>> getAttachList(int bno) {
+		log.info("첨부파일 목록 요청" + bno);
+		List<AttachFileDTO> list = service.getAttachList(bno);
+		if (list != null) {
+			return new ResponseEntity<List<AttachFileDTO>>(list, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	private void deleteAttachFiles(List<AttachFileDTO> attachList) {
+		log.info("첨부 파일 폴더에서 제거");
+		if (attachList == null || attachList.size() <= 0) {
+			return;
+		}
+		for (AttachFileDTO dto : attachList) {
+			// 파일 경로
+			Path path = Paths.get("c:\\upload\\" + dto.getUploadPath() + "\\" + dto.getUuid() + "_" + dto.getFileName());
+			try {
+				Files.deleteIfExists(path);
+
+				if (Files.probeContentType(path).startsWith("image")) {
+					Path thumb = Paths.get("c:\\upload\\" + dto.getUploadPath() + "\\s_" + dto.getUuid() + "_" + dto.getFileName());
+					Files.deleteIfExists(thumb);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

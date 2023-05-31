@@ -1,3 +1,50 @@
+//글번호에 대해서 첨부파일 가져오기
+
+function showAttachFile(uploadResultArr) {
+  //첨부파일 목록 보여주기
+  let str = "";
+  uploadResultArr.forEach((item) => {
+    //fileType이 true라면 image파일
+    if (item.fileType) {
+      //썸네일 이미지 경로 생성
+      let fileCallPath = encodeURIComponent(item.uploadPath + "\\s_" + item.uuid + "_" + item.fileName);
+
+      //썸네일 이미지 클릭 => 원본 이미지 보여주기
+      let oriFileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
+
+      str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
+      str += "data-filename='" + item.fileName + "' data-type='" + item.fileType + "' >";
+      str += "<a href='/display?fileName=" + oriFileCallPath + "'data-lightbox='image'>";
+      str += "<div class='text-center'><img src='/display?fileName=" + fileCallPath + "'></div>";
+      str += "<small>" + item.fileName + "</small></a> ";
+      str += "</li>";
+    } else {
+      // txt 파일
+      let fileCallPath = encodeURIComponent(item.uploadPath + "\\" + item.uuid + "_" + item.fileName);
+
+      str += "<li data-path='" + item.uploadPath + "' data-uuid='" + item.uuid + "' ";
+      str += "data-filename='" + item.fileName + "' data-type='" + item.fileType + "' >";
+      str += "<a href='/download?fileName=" + fileCallPath + "'>";
+      str += "<div class='text-center'><img src='/resources/img/txt-file.png'></div>";
+      str += "<small>" + item.fileName + "</small></a> ";
+      str += "</li>";
+    }
+  });
+  document.querySelector(".uploadResult ul").insertAdjacentHTML("beforeend", str);
+}
+
+fetch("/board/getAttachList?bno=" + bno) // = fetch("getAttachList?bno"+bno)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("첨부파일 없음");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    showAttachFile(data);
+  })
+  .catch((error) => console.log(error));
+
 const form = document.querySelector("#operForm");
 
 document.querySelector("#readForm").addEventListener("submit", (e) => {
@@ -33,29 +80,16 @@ function showReplyPage(total) {
   }
   let str = "<ul class='pagination justify-content-center'>";
   if (prev) {
-    str +=
-      "<li class='page-item'><a class='page-link' href='" +
-      (startPage - 1) +
-      "'>Previous</a></li>";
+    str += "<li class='page-item'><a class='page-link' href='" + (startPage - 1) + "'>Previous</a></li>";
   }
 
   for (let i = startPage; i <= endPage; i++) {
     let active = page == i ? "active" : "";
-    str +=
-      "<li class='page-item " +
-      active +
-      "'}'><a class='page-link' href='" +
-      i +
-      "'>" +
-      i +
-      "</a></li>";
+    str += "<li class='page-item " + active + "'}'><a class='page-link' href='" + i + "'>" + i + "</a></li>";
   }
 
   if (next) {
-    str +=
-      "<li class='page-item'><a class='page-link' href='" +
-      (endPage + 1) +
-      "'>Next</a></li>";
+    str += "<li class='page-item'><a class='page-link' href='" + (endPage + 1) + "'>Next</a></li>";
   }
 
   str += "</ul>";
@@ -89,17 +123,10 @@ function showList(pageNum) {
     }
     let str = "";
     for (let idx = 0; idx < result.length; idx++) {
-      str +=
-        "<li class='list-group-item border-bottom' data-rno='" +
-        result[idx].rno +
-        "'>";
+      str += "<li class='list-group-item border-bottom' data-rno='" + result[idx].rno + "'>";
       str += "<div class='d-flex justify-content-between'>";
-      str +=
-        "<strong class='primary-font'>" + result[idx].replyer + "</strong>";
-      str +=
-        "<small class='text-muted text-right'>" +
-        replyService.displayTime(result[idx].replyDate) +
-        "</small>";
+      str += "<strong class='primary-font'>" + result[idx].replyer + "</strong>";
+      str += "<small class='text-muted text-right'>" + replyService.displayTime(result[idx].replyDate) + "</small>";
       str += "</div>";
       str += "<p>" + result[idx].reply + "</p>";
       str += '<div class="btn-group btn-group-sm">';
@@ -158,17 +185,15 @@ chat.addEventListener("click", (e) => {
   }
 });
 
-document
-  .querySelector(".modal-footer .btn-primary")
-  .addEventListener("click", (e) => {
-    //모달 창 안에 있는 rno, reply 가져온 후 자바 스크립트 객체 생성
-    let updateReply = {
-      rno: document.querySelector("#replyModal #rno").value,
-      reply: document.querySelector("#replyModal #reply").value,
-    };
-    replyService.update(updateReply, (result) => {
-      alert("result");
-      $("#replyModal").modal("hide");
-      showList(page);
-    });
+document.querySelector(".modal-footer .btn-primary").addEventListener("click", (e) => {
+  //모달 창 안에 있는 rno, reply 가져온 후 자바 스크립트 객체 생성
+  let updateReply = {
+    rno: document.querySelector("#replyModal #rno").value,
+    reply: document.querySelector("#replyModal #reply").value,
+  };
+  replyService.update(updateReply, (result) => {
+    alert("result");
+    $("#replyModal").modal("hide");
+    showList(page);
   });
+});

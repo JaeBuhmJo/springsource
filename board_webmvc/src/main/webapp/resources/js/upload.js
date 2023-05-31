@@ -75,7 +75,9 @@ function showUploadedFile(uploadResultArr) {
   document.querySelector(".uploadResult ul").insertAdjacentHTML("beforeend", str);
 }
 
-// x 클릭 시
+// x 클릭 시 첨부파일 제거
+// register.jsp에서 사용하는 개념과 modify.jsp 사용하는 개념은 다름
+
 document.querySelector(".uploadResult").addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
     const targetFile = e.target.dataset.file;
@@ -83,32 +85,38 @@ document.querySelector(".uploadResult").addEventListener("click", (e) => {
 
     const li = e.target.closest("li");
 
-    //스크립트에서 <form> 생성
-    const formData = new FormData();
-    formData.append("fileName", targetFile);
-    formData.append("type", type);
-
-    //URLSearchParams -> /deleteFile?fileName=abcd.txt
-    //const data = new URLSearchParams(formData);
-    //위에 같은거 파라미터 형태로 주소줄에 딸려보낼 때 사용 가능한 객체
-
-    //  이미지 : 원본, 썸네일 이미지 제거
-    //  txt : 파일 제거
-    fetch("/deleteFile", {
-      method: "post",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("파일 제거 실패");
-        }
-        return response.text();
-      })
-      .then((data) => {
-        console.log(data);
-        // 첨부 목록 정리
+    if (path.includes("modify")) {
+      // modify 요청 처리 - 화면상에서만 목록 제거
+      if (confirm("정말로 파일을 삭제하시겠습니까?")) {
         li.remove();
+      }
+    } else {
+      // register 요청 처리 - db에서도 제거
+      //스크립트에서 <form> 생성
+      const formData = new FormData();
+      formData.append("fileName", targetFile);
+      formData.append("type", type);
+
+      fetch("/deleteFile", {
+        method: "post",
+        body: formData,
       })
-      .catch((error) => console.log(error));
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("파일 제거 실패");
+          }
+          return response.text();
+        })
+        .then((data) => {
+          console.log(data);
+          // 첨부 목록 정리
+          li.remove();
+        })
+        .catch((error) => console.log(error));
+    }
   }
 });
+
+//URLSearchParams -> /deleteFile?fileName=abcd.txt
+//const data = new URLSearchParams(formData);
+//위에 같은거 파라미터 형태로 주소줄에 딸려보낼 때 사용 가능한 객체

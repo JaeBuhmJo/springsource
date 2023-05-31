@@ -30,13 +30,13 @@
 		<div class="card">
 			<div class="card-header">   
 				<i class="fa fa-file"></i>
-				파일첨부
+				파일첨부 
 			</div>  
 			<div class="card-body">
 				<div class="uploadResult"> 
 					<ul></ul>
-				</div> 
-			</div>  
+				</div>  
+			</div>        
 		</div> 
 	</div> 
 </div> 
