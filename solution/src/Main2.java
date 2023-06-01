@@ -1,6 +1,12 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 public class Main2 {
@@ -8,75 +14,35 @@ public class Main2 {
 	public static void main(String[] args) throws Exception {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
 
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int length = Integer.parseInt(st.nextToken());
-			int targetCnt = Integer.parseInt(st.nextToken());
+			String[] orders = { "alex pizza pasta", "alex pizza pizza", "alex noodle", "bob pasta",
+					"bob noodle sandwich pasta", "bob steak noodle" };
 
-			int[] arr = new int[length];
-			st = new StringTokenizer(br.readLine());
-			for (int i = 0; i < length; i++) {
-				arr[i] = Integer.parseInt(st.nextToken());
+			int maxOrder = 0;
+			Map<String, Set<String>> orderMap = new HashMap<String, Set<String>>();
+			for (int i = 0; i < orders.length; i++) {
+				StringTokenizer st = new StringTokenizer(orders[i]);
+				String name = st.nextToken();
+				if (!orderMap.keySet().contains(name)) {
+					orderMap.put(name, new HashSet<String>());
+				}
+				while (st.hasMoreTokens()) {
+					orderMap.get(name).add(st.nextToken());
+				}
+				maxOrder = Math.max(maxOrder, orderMap.get(name).size());
 			}
-			new MergeSort2(arr, targetCnt).solution();
-			System.out.println(Arrays.toString(arr));
-		}
-	}
-}
 
-class MergeSort2 {
-	int saveCnt;
-	int targetCnt;
-	int answer;
-	int[] arr;
-	int[] temp;
+			System.out.println(orderMap);
+			System.out.println(maxOrder);
 
-	public MergeSort2(int[] arr, int targetCnt) {
-		this.targetCnt = targetCnt;
-		this.arr = arr;
-		this.saveCnt = 0;
-		this.temp = new int[arr.length];
-		this.answer = -1;
-	}
-
-	public void mergeSort(int left, int right) {
-		if (left < right) {
-			int mid = (left + right) / 2;
-			mergeSort(left, mid);
-			mergeSort(mid + 1, right);
-			merge(left, mid, right);
-		}
-	}
-
-	public void merge(int left, int mid, int right) {
-		int i = left;
-		int j = mid + 1;
-		int k = left;
-		while (i <= mid && j <= right) {
-			if (arr[i] <= arr[j]) {
-				temp[k++] = arr[i++];
-			} else {
-				temp[k++] = arr[j++];
+			ArrayList<String> list = new ArrayList<String>();
+			for (Map.Entry<String, Set<String>> entry : orderMap.entrySet()) {
+				if (entry.getValue().size() == maxOrder) {
+					list.add(entry.getKey());
+				}
 			}
-		}
-		while (i <= mid) {
-			temp[k++] = arr[i++];
-		}
-		while (j <= right) {
-			temp[k++] = arr[j++];
-		}
-		i = left;
-		k = left;
-		while (i <= right) {
-			arr[i++] = temp[k++];
-			saveCnt++;
-			if (saveCnt == targetCnt) {
-				answer = temp[k - 1];
-			}
-		}
-	}
 
-	public void solution() {
-		mergeSort(0, arr.length - 1);
-		System.out.println(answer);
+			Collections.sort(list);
+			System.out.println(Arrays.toString(list.toArray()));
+		}
 	}
 }
