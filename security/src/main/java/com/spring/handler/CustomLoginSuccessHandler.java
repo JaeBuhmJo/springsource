@@ -19,6 +19,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
+
 		// 로그인 사용자의 권한 확인
 		// ROLE_ADMIN이라면 adminpage 이동, ROLE_USER 라면 userpage 이동
 		List<String> roleNames = new ArrayList<String>();
