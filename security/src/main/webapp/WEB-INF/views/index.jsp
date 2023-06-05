@@ -12,6 +12,11 @@
 				<a href="/security/login">로그인</a>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col">
+				<a href="/security/register">회원가입</a>
+			</div>
+		</div>
 	</security:authorize>
 	
 	<!-- 인증(로그인)이 된 경우 : 부여된 권한에 따라 접근할 수 있는 페이지가 다르다면? -->

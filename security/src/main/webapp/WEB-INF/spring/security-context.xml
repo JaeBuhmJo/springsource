@@ -12,8 +12,15 @@
 
 	<bean id="customLoginSuccessHandler" class="com.spring.handler.CustomLoginSuccessHandler"></bean>
 	<bean id="CustomAccessDeniedHandler" class="com.spring.handler.CustomAccessDeniedHandler"></bean>
+	
+	<!-- 비밀번호 암호화 담당 -->
+	<bean id="encoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 
 	<security:http>
+	<!-- remember-me 활성화 -->
+		<security:remember-me data-source-ref="ds" token-validity-seconds="604800"/>
+		
+		
 	<!-- 
 		폼 로그인 인증 방식을 선택
 		login-page : 컨트롤러 경로(로그인 폼 페이지)
@@ -35,20 +42,32 @@
 		<!-- 
 			logout post 시 해야 하는 작업
 		 -->
-		<security:logout invalidate-session="true" delete-cookies="remember-me, JSESSION_ID"/>
+		 
+		<!-- 지금 적혀있는 옵션들은 기본값이긴 함 -->
+		<security:logout invalidate-session="true" delete-cookies="JSESSION_ID"/>
+		
 		<!-- 특정경로를 요청 시 적절한 권한 여부를 확인한 후 로그인 페이지로 이동, 403 페이지 -->
 		<!-- <security:intercept-url pattern="/security/userpage" access="hasRole('ROLE_USER')"/>
 		<security:intercept-url pattern="/security/adminpage" access="hasRole('ROLE_ADMIN')"/> -->
 	</security:http>
 
-	<!-- 비밀번호는 무조건 암호화 상태여야 함 : {noop} => 암호화 하지 않기-->
-	<security:authentication-manager>
+	<!-- 
+		비밀번호는 무조건 암호화 상태여야 함 : {noop} => 암호화 하지 않기
+		인 메모리 인증방식 - 테스트 시
+		
+	-->
+	<!-- <security:authentication-manager>
 		<security:authentication-provider>
 			<security:user-service>
 				<security:user name="user1" password="{noop}user1" authorities="ROLE_USER"/>
 				<security:user name="admin" password="{noop}admin" authorities="ROLE_USER, ROLE_ADMIN"/>
 			</security:user-service>
 		</security:authentication-provider>
-	</security:authentication-manager>
+	</security:authentication-manager> -->
+	 <security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailService">
+			<security:password-encoder ref="encoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager> 
 
 </beans>
