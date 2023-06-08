@@ -1,43 +1,46 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 class Solution {
-	public static void main(String args[]) throws Exception {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-			int testcases = Integer.parseInt(br.readLine());
 
-			for (int i = 0; i < testcases; i++) {
-				int num1 = 0;
-				int num2 = 0;
-				int gap = Integer.parseInt(br.readLine());
-				for (int j = 4; j <= 1000000000; j++) {
-					if ((j >= 4) && (j % 2 == 0) || !isPrime(j)) {
-						if (!isPrime(j - gap)) {
-							num1 = j;
-							num2 = j - gap;
-							break;
-						}
-						if (!isPrime(j + gap)) {
-							num1 = j + gap;
-							num2 = j;
-							break;
-						}
-					}
-				}
-				System.out.println("#" + (i + 1) + " " + num1 + " " + num2);
+	public int solution(String str1, String str2) {
+		Map<String, Integer> map1 = getMap(str1);
+		Map<String, Integer> map2 = getMap(str2);
+		int inter = 0;
+		int union = 0;
+
+		for (Map.Entry<String, Integer> entry : map1.entrySet()) {
+			String key = entry.getKey();
+			if (map2.containsKey(key)) {
+				inter += Math.min(map1.get(key), map2.get(key));
+				union += Math.max(map1.get(key), map2.get(key));
+				map2.remove(key);
+			} else {
+				union += map1.get(key);
 			}
 		}
+		for (Integer value : map2.values()) {
+			union += value;
+		}
+
+		int answer = 0;
+		if (union == 0) {
+			answer = 65536;
+		} else {
+			answer = (int) ((inter / (double) union) * 65536);
+		}
+		return answer;
 	}
 
-	public static boolean isPrime(int num) {
-		if (num < 3) {
-			return true;
-		}
-		for (int i = 3; i <= (int) Math.sqrt(num); i += 2) {
-			if (num % i == 0) {
-				return false;
+	public Map<String, Integer> getMap(String str) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		str = str.toLowerCase();
+		for (int i = 0; i < str.length() - 1; i++) {
+			if (Character.isLetter(str.charAt(i)) && Character.isLetter(str.charAt(i + 1))) {
+				String string = str.substring(i, i + 2);
+				map.put(string, map.getOrDefault(string, 0) + 1);
 			}
 		}
-		return true;
+		return map;
 	}
 }
