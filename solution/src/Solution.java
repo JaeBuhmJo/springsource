@@ -1,46 +1,50 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Solution {
+	boolean[] notPrime;
+	boolean[] visited;
+	String[] numArr;
+	StringBuilder sb;
+	int depth;
 
-	public int solution(String str1, String str2) {
-		Map<String, Integer> map1 = getMap(str1);
-		Map<String, Integer> map2 = getMap(str2);
-		int inter = 0;
-		int union = 0;
-
-		for (Map.Entry<String, Integer> entry : map1.entrySet()) {
-			String key = entry.getKey();
-			if (map2.containsKey(key)) {
-				inter += Math.min(map1.get(key), map2.get(key));
-				union += Math.max(map1.get(key), map2.get(key));
-				map2.remove(key);
-			} else {
-				union += map1.get(key);
-			}
-		}
-		for (Integer value : map2.values()) {
-			union += value;
-		}
-
+	public int solution(String numbers) {
 		int answer = 0;
-		if (union == 0) {
-			answer = 65536;
-		} else {
-			answer = (int) ((inter / (double) union) * 65536);
-		}
+		getPrimeMatrix((int) Math.pow(10, numbers.length()));
+
+		// numbers 길이 1~7인 문자열, 0~9까지의 숫자로만 이루어져있음
+		// dfs 백트래킹으로 모든 가능한 문자열을 뽑아낸다
+		// 결과는 set에 담아서 size로 반환한다.
+		numArr = numbers.split("");
+		visited = new boolean[numArr.length];
+		sb = new StringBuilder();
+		depth = 0;
+		dfs(0);
 		return answer;
 	}
 
-	public Map<String, Integer> getMap(String str) {
-		Map<String, Integer> map = new HashMap<String, Integer>();
-		str = str.toLowerCase();
-		for (int i = 0; i < str.length() - 1; i++) {
-			if (Character.isLetter(str.charAt(i)) && Character.isLetter(str.charAt(i + 1))) {
-				String string = str.substring(i, i + 2);
-				map.put(string, map.getOrDefault(string, 0) + 1);
+	public void dfs(int node) {
+		if(depth==numArr.length)
+		for (int i = 0; i < numArr.length; i++) {
+			if (!visited[i]) {
+				visited[i] = true;
+				depth++;
+				sb.append(numArr[i]);
+				dfs(i);
+				visited[i] = false;
+				depth--;
+				sb.delete(sb.length() - 1, sb.length() + 1);
 			}
 		}
-		return map;
+	}
+
+	public void getPrimeMatrix(int size) {
+		boolean[] notPrime = new boolean[size];
+		notPrime[0] = true;
+		notPrime[1] = true;
+		for (int i = 2; i <= Math.sqrt(size); i++) {
+			if (!notPrime[i]) {
+				for (int j = i * i; j < notPrime.length; j += i) {
+					notPrime[j] = true;
+				}
+			}
+		}
 	}
 }

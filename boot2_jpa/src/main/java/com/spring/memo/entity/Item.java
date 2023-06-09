@@ -11,11 +11,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
+@Builder
 @Entity
 @Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
@@ -35,6 +36,7 @@ public class Item {
 	@Column(nullable = false)
 	private int stockNumber; // 재고수량
 	
+	@Column(nullable = false)
 	private String itemDetail; // 상품상세설명
 	
 	@Enumerated(EnumType.STRING)
